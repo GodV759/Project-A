@@ -1,32 +1,58 @@
 //Library - Of course!
-import React from 'react';
-import {View, Text, StyleSheet, TextInput, Image, TouchableOpacity} from 'react-native';
-
+import React, { useState } from 'react';
+import {View, Text, StyleSheet, TextInput,
+        Image, TouchableOpacity, 
+        TouchableWithoutFeedback,
+        Keyboard,
+        Alert} from 'react-native';
+import Users from '../../services/User';
 
 //This's what u see (_ _")
 function Login({ navigation })
 {
+    const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
+
+	const handleLogin = () => {
+		if(username.trim() === '') {
+			return Alert.alert('Bạn chưa nhập tên tài khoản');
+		}
+
+		if(password.trim() === '') {
+			return Alert.alert('Bạn chưa nhập mật khẩu');
+		}
+
+		if(username !== Users.username || password !== Users.password) {
+			return Alert.alert('Tài khoản hoặc mật khẩu không đúng');
+		}
+
+		navigation.navigate('ListWorks');
+	}
     return (
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={Haladie.all}>
             <Image 
                 source={require('../../images/Logo.png')}   
                 style={Haladie.image} 
             >                
             </Image>
-            <TextInput style={[Haladie.input, Haladie.username]}
-                   
+            <TextInput 
+                       style={[Haladie.input, Haladie.username]}
+                       onChangeText={(text) => setUsername(text)}
                        placeholder='Tên tài khoản' 
             >
             </TextInput>
-            <TextInput style={[Haladie.input, Haladie.password]}
+            <TextInput 
+                       style={[Haladie.input, Haladie.password]}
                        placeholder='Mật khẩu'
                        secureTextEntry={true}
+                       onChangeText={(text) => setPassword(text)}
             >
             </TextInput>
             <Text style={Haladie.txtfg}>Quên mật khẩu? Nhấn vào đây</Text>
             <TouchableOpacity
                 style={Haladie.btLogin}            
-                onPress={() => navigation.navigate('ListWorks')}
+                onPress={handleLogin}
             >
                 <Text style={Haladie.txtLogin}>Đăng nhập</Text>
             </TouchableOpacity>
@@ -35,6 +61,7 @@ function Login({ navigation })
             >Chưa có tài khoản? Đăng kí ngay</Text>
             <Text style={Haladie.txtbot}>Chính sách Bảo mật | Điều Khoản và Điều kiện</Text>
         </View>
+        </TouchableWithoutFeedback>
     );
 }
 
