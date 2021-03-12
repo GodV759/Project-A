@@ -6,14 +6,15 @@ import {
 	FlatList,
 	Image,
 	TouchableOpacity,
-	Alert,
 } from 'react-native';
 import data from '../../services/List';
 import Header from '../../components/Header';
 
-function ItemList({ data }) {
+function ItemList({ navigation, data }) {
 	return (
-		<TouchableOpacity onPress={() => Alert.alert('Chức năng đang được cập nhật')}>
+		<TouchableOpacity onPress={()=>navigation.navigate('ListWorksDetails', {
+			idWork: data.id
+		})}>
 			<View style={styles.container}>
 				<View style={styles.containerImage}>
 					<Image
@@ -40,13 +41,13 @@ function ItemList({ data }) {
 function List({ navigation }) {
 	return (
 		<View style={styles.waper}>
-			<Header onBack={()=>navigation.navigate('Login')}
+			<Header onBack={()=>navigation.goBack()}
 				title='List Works'
 			></Header>
 			<FlatList
 				data={data}
 				keyExtractor={(item) => item.id}
-				renderItem={({ item }) => <ItemList data={item}></ItemList>}
+				renderItem={({ item }) => <ItemList navigation={navigation} data={item}></ItemList>}
 			></FlatList>
 		</View>
 	);
